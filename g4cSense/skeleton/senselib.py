@@ -28,7 +28,6 @@ def drawHorizontalLine(x0, y0, size, r, g, b):
     for x in range(x0, x0+size):
         if not isCoordinateOnScreen( (x, y0) ):
             continue
-
     sense.set_pixel(x, y0, r, g, b)
 
 def drawVerticalLine(x0, y0, size, r, g, b):

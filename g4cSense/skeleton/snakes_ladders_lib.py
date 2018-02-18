@@ -2,7 +2,6 @@ import sys
 sys.path.insert(1,'/home/pi/Go4Code/g4cSense/graphics')
 from sense_hat import SenseHat
 # from My_RPiFiles.g4cSense.graphics.senseGraphics import *
-
 from senseGraphics import *
 from senselib import *
 from copy import deepcopy
@@ -10,6 +9,7 @@ import random
 import time
 import numpy as np
 
+boardColour = [150,150,0]
 reds = getColour('red')
 random.shuffle(reds)
 blues = getColour('blue')
@@ -24,33 +24,19 @@ class snakesLadders():
         self.board = []
         self.snakes = []
         self.ladders = []
-        self.players = []
 
         self.sense = sense
         self.sense.clear()
-        self.boardColour = [0,0,0]
-    def setBoardColour(self,colour):
-        self.boardColour = colour
-
-    ###Adding snakes ladders and players
 
     def addSnake(self,headX,headY,tailX,tailY):
 
         self.snakes.append(snake(headX,headY,tailX,tailY))
+        self.setBoard()
 
     def addLadder(self,headX,headY,tailX,tailY):
         self.ladders.append(ladder(headX,headY,tailX,tailY))
+        self.setBoard()
 
-
-    def addPlayer(self,player):
-        self.players.append(player)
-
-
-    ## Getter methods
-
-    def getPlayers(self):
-
-        return self.players
 
     def getSnakes(self):
 
@@ -79,6 +65,7 @@ class snakesLadders():
                     snakeTail = snake.getTail()
 
                     if i == snakeHead[0] and j == snakeHead[1]:
+                        print('snakeHead')
                         newBoard.append(snake.colour)
                         snakeFound = True
                         break
@@ -109,22 +96,13 @@ class snakesLadders():
 
 
                 if not ladderFound and not snakeFound:
-                    newBoard.append(self.boardColour)
+                    newBoard.append(boardColour)
 
 
 
 
         self.board = newBoard
         self.sense.set_pixels(self.board)
-
-        for j in range(8):
-            for i in range(8):
-
-                for player in self.players:
-                    if i == player.positionX and j == player.positionY:
-                        print("setting player with colour", player.pieceColour)
-                        self.sense.set_pixel(i, j, [0,0,0])
-                        self.sense.set_pixel(i,j,player.pieceColour)
 
 
 
@@ -166,32 +144,4 @@ class ladder():
 
     def getTop(self):
         return deepcopy(self.head)
-
-
-class player():
-
-    def __init__(self, colour = None):
-
-        self.positionX = 0
-        self.positionY = 7
-        if colour == None:
-            randomGreenColour = randomGreen()
-            print(type(randomGreenColour))
-            self.pieceColour = randomGreenColour
-        else:
-            self.pieceColour = colour
-
-    def setPlayerPosition(self,xPosition,yPosition):
-
-        self.positionY = yPosition
-        self.positionX = xPosition
-
-    def getPlayerPositionX(self):
-
-        return deepcopy(self.positionX)
-
-
-    def getPlayerPositionY(self):
-
-        return deepcopy(self.positionY)
 
