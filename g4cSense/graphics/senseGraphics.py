@@ -1094,6 +1094,8 @@ def downArrow(colour = None):
     downArrow = arrow(colour)
     downArrow.reverse()
     return downArrow
+
+
 def ticTacToeBoard():
     c = randomColour()
 
